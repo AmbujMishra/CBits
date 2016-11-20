@@ -4,6 +4,7 @@ package com.kingam.cbits;
 * Created:	24 August 2016
 * Version:	1.0	(24 August 2016)
 * 12 Nov 2016: Time attack mode implementation starting
+* 19 Nov 2016: Finished time counter related canges
 */
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -18,8 +19,8 @@ public class BitCScreen implements Screen {
 	CbitsGame game;
 	float x[],y[],x1[],y1[],w,h,w1,h1,pw,gap,x3,y3;
 	double a[];
-	float speed,hold,time,bt,sp, tshow;
-	boolean caught[],go,scr,scrt,nb,tou,banner;
+	float speed,hold,time,bt,sp,tshow,tt;	//tt=total time so far
+	boolean caught[],go,scr,scrt,nb,tou,banner,to;  //to=timeover
 	//long strttime;
 	int t[];
 	//boolean caught2=false;
@@ -52,19 +53,22 @@ public class BitCScreen implements Screen {
 		a=new double[game.st];
 		t= new int[2];
 		caught= new boolean[game.st];
+		to=false;		//to=true means time is over
 		speed=200;
-		go=true;
+		go=true;		//go=true means all bits have been caught on screen
 		scr=true;
 		scrt=false;
 		nb=false;
 		tou=false;
 		banner=false;
 		hold=0;
-		time=0;
+		//time=0;
 		//21 Nov 2016
-		time=game.st*1*3;
-		bt=0;
+		time=game.st*3;
+		//bt=0;
+		bt=game.pref.getFloat(game.st+"best");
 		tshow=0;
+		tt=0;
 		//shti=0;
 		sp=game.pref.getFloat(game.st+"maxsp");
 		//strttime=System.currentTimeMillis();
@@ -83,27 +87,44 @@ public class BitCScreen implements Screen {
 		Gdx.gl.glClearColor(game.CC.bgColor[0],game.CC.bgColor[1],game.CC.bgColor[2],game.CC.bgColor[3]);		// Back ground color
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		game.camera.update();
-		if(time<=0)
+		if(time<0)
 		{
+			to=true;
+			for(int i=0;i<game.st;i++)
+				caught[i]=true;
 			go=true;
 		}
-		if(!go || !(nb||sp==game.getMaxsp()))
+		//if(!go || !(nb||sp==game.getMaxsp()))
 			//12 Nov 2016
 			//if(!go || !(nb||sp==game.getMaxsp()) || time>0)
+		//19 Nov 2016
+			if(!go && !to)
 		{
 			//time=time+d;
 			//12 Nov 2016
 			time=time-d;
 			time=Math.round(time*100)/100f;
 		//game.CD.stringDrawing(game.sr,gap,game.h-h1-gap,w1,h1,pw,gap,(int)speed/200+"X"+"|"+Float.toString(time),game.CC.getCharColor());
-		game.CD.stringDrawing(game.sr,gap,game.h-h1-gap,w1,h1,pw,gap,Float.toString(time),game.CC.getCharColor());
-		game.CD.stringDrawing(game.sr,game.w-4*w1-gap,game.h-h1-gap,w1,h1,pw,gap,(int)speed/200+"X",game.CC.getCharColor());
+		    game.CD.stringDrawing(game.sr,gap,game.h-h1-gap,w1,h1,pw,gap,Float.toString(time),game.CC.getCharColor());
+		//game.CD.stringDrawing(game.sr,game.w-4*w1-gap,game.h-h1-gap,w1,h1,pw,gap,(int)speed/200+"X",game.CC.getCharColor());
+			//moved to bot corner of screen 19 Nov 2016
+			//game.CD.stringDrawing(game.sr,game.w-4*w1-gap,gap,w1,h1,pw,gap,(int)speed/200+"X",game.CC.getCharColor());
+			game.CD.stringDrawing(game.sr,gap,gap,w1,h1,pw,gap,(int)speed/200+"X",game.CC.getCharColor());
+			//adding best score and + sign
+			game.CD.stringDrawing(game.sr,(game.w+w1)*0.5f,game.h-h1-gap,w1,h1,pw,gap,"+",game.CC.getCharColor());
+			game.CD.stringDrawing(game.sr,game.w-6*(w1+gap),game.h-h1-gap,w1,h1,pw,gap,Float.toString(tt),game.CC.getCharColor());
 		}
 		else
 		{
+			if(time<0)
+				time=0;
 		//game.CD.stringDrawing(game.sr,gap,game.h-h1-gap,w1,h1,pw,gap,(int)speed/200+"X"+"|"+Float.toString(time),game.CC.getCharColor());
 			game.CD.stringDrawing(game.sr,gap,game.h-h1-gap,w1,h1,pw,gap,Float.toString(time),game.CC.getCharColor());
-			game.CD.stringDrawing(game.sr,game.w-4*w1-gap,game.h-h1-gap,w1,h1,pw,gap,(int)speed/200+"X",game.CC.getCharColor());
+			game.CD.stringDrawing(game.sr,(game.w+w1)*0.5f,game.h-h1-gap,w1,h1,pw,gap,"+",game.CC.getCharColor());
+			//game.CD.stringDrawing(game.sr,game.w-4*w1-gap,game.h-h1-gap,w1,h1,pw,gap,(int)speed/200+"X",game.CC.getCharColor());
+			//game.CD.stringDrawing(game.sr,game.w-4*w1-gap,gap,w1,h1,pw,gap,(int)speed/200+"X",game.CC.getCharColor());
+			game.CD.stringDrawing(game.sr,gap,gap,w1,h1,pw,gap,(int)speed/200+"X",game.CC.getCharColor());
+			game.CD.stringDrawing(game.sr,game.w-6*(w1+gap),game.h-h1-gap,w1,h1,pw,gap,Float.toString(tt),game.CC.getCharColor());
 		}
 		/*if(Gdx.input.justTouched())
 		{
@@ -235,7 +256,7 @@ public class BitCScreen implements Screen {
 		}
 		}
 		//after completeing for loop if gp=true that means go
-		if(go)
+		if(go && !to)
 		{
 			if(hold<3)
 			{
@@ -255,15 +276,18 @@ public class BitCScreen implements Screen {
 			}
 			else if(scr)
 			{
-				if(!scrt)
+				if(!scrt)		//calculating score
 				{ scrt=true;
+					tt=Math.round((tt+time)*100)/100f;	//total time
+					time=0;
 				//System.out.println("prev time "+time);
 				//time=time+(float)(System.currentTimeMillis()-strttime)/1000;
 				//System.out.println("added time "+time);
 			//	game.aoi.toast("TIME:"+time);
-				bt=game.pref.getFloat(game.st+"best"+speed);
+			//	bt=game.pref.getFloat(game.st+"best"+speed);// 19 Nov commented
+				bt=game.pref.getFloat(game.st+"best");	// 1 best score for each category now 19 Nov
 				sp=game.pref.getFloat(game.st+"maxsp");
-				if(bt==0 || bt>time )
+			/*	if(bt==0 || bt>time )	//commented on 19 NOv, new logic below
 				{
 					//bt=time;
 					game.pref.putFloat(game.st+"best"+speed, time);
@@ -274,7 +298,23 @@ public class BitCScreen implements Screen {
 						nb=true;
 					}
 					game.pref.flush();
+				}*/
+					if(tt>bt )
+				{
+					nb=true;
+
+					//bt=time;
+					game.pref.putFloat(game.st+"best", tt);
+					bt=tt;
+					//if(speed>=sp)	//commented on19 Nov , not required
+					//{
+						game.pref.putFloat(game.st+"maxsp", speed);
+					sp=speed;
+						//game.pref.putFloat(game.st+"best", time); commented on 19 Nov, not required now
+					//}
+					game.pref.flush();
 				}
+
 				}
 				if(!nb && speed!=game.getMaxsp())
 				{
@@ -293,11 +333,15 @@ public class BitCScreen implements Screen {
 			    game.CC.setNewColor(game.CC.blackColor, "ch");
 			    if(nb)
 			    game.CD.stringDrawing(game.sr,x3,game.h-gap-5*h1,w1,h1,pw,gap,"NEW RECORD",game.CC.getCharColor());
-			    game.CD.stringDrawing(game.sr,gap,game.h-gap-9*h1,w1,h1,pw,gap,"MAX SPEED :"+(int)speed/200+"X",game.CC.getCharColor());
+					else
+					game.CD.stringDrawing(game.sr,x3,game.h-gap-5*h1,w1,h1,pw,gap,"MAX SPEED REACHED",game.CC.getCharColor());
+			    game.CD.stringDrawing(game.sr,gap,game.h-gap-9*h1,w1,h1,pw,gap,"SPEED     :"+(int)speed/200+"X",game.CC.getCharColor());
 			    if(nb)
-			    game.CD.stringDrawing(game.sr,gap,game.h-gap-11*h1,w1,h1,pw,gap,"NEW BEST  :"+time,game.CC.getCharColor());
-			    if(bt!=0)
-			    game.CD.stringDrawing(game.sr,gap,game.h-gap-13*h1,w1,h1,pw,gap,"OLD RECORD:"+bt,game.CC.getCharColor());
+			    game.CD.stringDrawing(game.sr,gap,game.h-gap-11*h1,w1,h1,pw,gap,"NEW BEST  :"+tt,game.CC.getCharColor());
+					else
+					game.CD.stringDrawing(game.sr,gap,game.h-gap-11*h1,w1,h1,pw,gap,"SCORE     :"+tt,game.CC.getCharColor());
+			  //  if(bt!=0)
+			  //  game.CD.stringDrawing(game.sr,gap,game.h-gap-13*h1,w1,h1,pw,gap,"OLD RECORD:"+bt,game.CC.getCharColor());
 			    game.CD.stringDrawing(game.sr,game.w*0.5f-3*(gap+w1),4*(h1+gap),w1*1.5f,h1*1.5f,pw*1.5f,gap,"SHARE",game.CC.getCharColor());
 			    game.CD.stringDrawing(game.sr,gap,gap,w1,h1,pw,gap,"LEADERBOARD",game.CC.getCharColor());
 			    game.CD.stringDrawing(game.sr,game.w-6*w1-6*gap,gap,w1,h1,pw,gap,"SUBMIT",game.CC.getCharColor());
@@ -316,6 +360,7 @@ public class BitCScreen implements Screen {
 				 scrt=false;
 				 scr=true;
 				 nb=false;
+				time=game.st*3*(int)speed/200;
 				// strttime=System.currentTimeMillis();
 				//if(bt<=time)
 					//else
@@ -336,6 +381,30 @@ public class BitCScreen implements Screen {
 				
 			}
 		}
+		else if(to)
+		{
+			Gdx.gl.glEnable(GL20.GL_BLEND);
+			Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+			game.sr.begin(ShapeType.Filled);
+			game.sr.setColor(game.CC.transColor[0],game.CC.transColor[1],game.CC.transColor[2],game.CC.transColor[3]);
+			game.sr.rect(0,0,game.w,game.h);
+			game.sr.end();
+			Gdx.gl.glDisable(GL20.GL_BLEND);
+			game.CC.setNewColor(game.CC.blackColor, "ch");
+			game.CD.stringDrawing(game.sr,x3,game.h-gap-5*h1,w1,h1,pw,gap,"TIME OVER",game.CC.getCharColor());
+			//if(speed>200)
+			//game.CD.stringDrawing(game.sr,gap,game.h-gap-9*h1,w1,h1,pw,gap,"SPEED  :"+(int)(speed-200)/200+"X",game.CC.getCharColor());
+			//else
+				game.CD.stringDrawing(game.sr,gap,game.h-gap-9*h1,w1,h1,pw,gap,"SPEED  :"+(int)speed/200+"X",game.CC.getCharColor());
+
+			game.CD.stringDrawing(game.sr,gap,game.h-gap-11*h1,w1,h1,pw,gap,"SCORE  :"+tt,game.CC.getCharColor());
+			game.CD.stringDrawing(game.sr,gap,game.h-gap-13*h1,w1,h1,pw,gap,"BEST   :"+bt,game.CC.getCharColor());
+			game.CC.setNewColor(game.CC.charColorColl[game.pref.getInteger("color")], "ch");
+			if(game.aoi.isNetConnected() && !banner)
+			{game.aoi.showBannerAd();
+				banner=true;
+			}
+		}
 		if(Gdx.input.justTouched())
 		{
 			System.out.println("yes");
@@ -346,7 +415,11 @@ public class BitCScreen implements Screen {
 			t[1]=Gdx.input.getY();
 			}
 			//game.BD.draw(game.sr,0,0,Gdx.input.getX(),game.h-Gdx.input.getY(), '2');
-			if(go && nb && share(Gdx.input.getX(),Gdx.input.getY()))
+			if(to)
+			{
+				show();
+			}
+			else if(go && nb && share(Gdx.input.getX(),Gdx.input.getY()))
 			{
 				game.aoi.share
 				("TRY TO BEAT MY "+game.st+" BIT "+"CATCH RECORD"+"\n"+
@@ -365,9 +438,11 @@ public class BitCScreen implements Screen {
 				game.aoi.submitScore(62542, 1);
 			}
 			else if(scrt)
-			{scrt=false;
-			 scr=true;
-			 nb=false;
+			{
+			//scrt=false;
+			 //scr=true;  commented on 19 Nov
+			scr=false;
+			//nb=false;
 			banner=false;
 			//strttime=System.currentTimeMillis();
 			if(speed==game.getMaxsp())
