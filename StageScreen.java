@@ -40,10 +40,11 @@ public class StageScreen implements Screen{
 	public void show() {
 		
 		//calculating total
-		tsp=0;tbt=0;
+		//tsp=0;
+		tbt=0;
 		for(int i=1;i<=32;)
 		{
-			tsp=tsp+game.pref.getFloat(i+"maxsp");
+			//tsp=tsp+game.pref.getFloat(i+"maxsp");
 			tbt=tbt+game.pref.getFloat(i+"best");
 			i=i*2;
 		}
@@ -110,7 +111,7 @@ public class StageScreen implements Screen{
 		
 		*/
 		//09 Oct 2016
-		game.CD.stringDrawing(game.sr,gap,game.h-3*h-gap,w*0.5f,h*0.5f,pw*0.5f,gap,"TOTAL:"+(int)tsp/200+"X IN "+ tbt,game.CC.getCharColor());
+		game.CD.stringDrawing(game.sr,gap,game.h-3*h-gap,w*0.5f,h*0.5f,pw*0.5f,gap,"TOTAL SCORE:"+ tbt,game.CC.getCharColor());
 		//new stage screen on 14 09 2016
 				game.CD.stringDrawing(game.sr,game.w*0.5f-5*(w+gap),game.h-h-gap,w,h,pw,gap,"CATEGORIES",game.CC.getCharColor());
 				//game.CD.stringDrawing(game.sr,game.w*0.5f-5*(w+gap),game.h-4*h-gap,w,h,pw,gap,"CATEGORIES",game.CC.getCharColor());
@@ -237,28 +238,28 @@ public class StageScreen implements Screen{
 				game.CD.stringDrawing(game.sr,2*gap,y2-h-gap,w1,h1/6,6*pw,gap,"16",game.CC.getCharColor());
 				game.CD.stringDrawing(game.sr,x1-4*w+3*gap,y2-h-gap,w1,h1/6,6*pw,gap*1.5f,"32",game.CC.getCharColor());
 				
-				game.CD.stringDrawing(game.sr,2*gap+pw,2*(h+3*gap+pw)-gap,w*0.5f,h*0.5f,pw*0.5f,gap,"MAX SPEED:"+(int)game.pref.getFloat("16maxsp")/200+"X",game.CC.getCharColor());
+				game.CD.stringDrawing(game.sr,2*gap+pw,2*(h+3*gap+pw)-gap,w*0.5f,h*0.5f,pw*0.5f,gap,"SPEED:"+(int)game.pref.getFloat("16maxsp")/200+"X",game.CC.getCharColor());
 				game.CD.stringDrawing(game.sr,2*gap+pw,2*(h+3*gap+pw)-h-gap,w*0.5f,h*0.5f,pw*0.5f,gap,"BEST:"+game.pref.getFloat("16best"),game.CC.getCharColor());
 				
-				game.CD.stringDrawing(game.sr,game.w*0.5f+pw+gap,2*(h+3*gap+pw)-gap,w*0.5f,h*0.5f,pw*0.5f,gap,"MAX SPEED:"+(int)game.pref.getFloat("32maxsp")/200+"X",game.CC.getCharColor());
+				game.CD.stringDrawing(game.sr,game.w*0.5f+pw+gap,2*(h+3*gap+pw)-gap,w*0.5f,h*0.5f,pw*0.5f,gap,"SPEED:"+(int)game.pref.getFloat("32maxsp")/200+"X",game.CC.getCharColor());
 				game.CD.stringDrawing(game.sr,game.w*0.5f+pw+gap,2*(h+3*gap+pw)-h-gap,w*0.5f,h*0.5f,pw*0.5f,gap,"BEST:"+game.pref.getFloat("32best"),game.CC.getCharColor());
 				
 				game.CD.stringDrawing(game.sr,gap+4*w,y2+h1/3-h-gap,w1,h1/6,6*pw,0,"4",game.CC.getCharColor());
 				game.CD.stringDrawing(game.sr,x1,y2+h1/3-h-gap,w1,h1/6,6*pw,0,"8",game.CC.getCharColor());	
 				
-				game.CD.stringDrawing(game.sr,2*gap+pw,y1/3+2*(3*gap+pw)-gap,w*0.5f,h*0.5f,pw*0.5f,gap,"MAX SPEED:"+(int)game.pref.getFloat("4maxsp")/200+"X",game.CC.getCharColor());
+				game.CD.stringDrawing(game.sr,2*gap+pw,y1/3+2*(3*gap+pw)-gap,w*0.5f,h*0.5f,pw*0.5f,gap,"SPEED:"+(int)game.pref.getFloat("4maxsp")/200+"X",game.CC.getCharColor());
 				game.CD.stringDrawing(game.sr,2*gap+pw,y1/3+2*(3*gap+pw)-h-gap,w*0.5f,h*0.5f,pw*0.5f,gap,"BEST:"+game.pref.getFloat("4best"),game.CC.getCharColor());
 				
-				game.CD.stringDrawing(game.sr,game.w*0.5f+pw+gap,y1/3+2*(3*gap+pw)-gap,w*0.5f,h*0.5f,pw*0.5f,gap,"MAX SPEED:"+(int)game.pref.getFloat("8maxsp")/200+"X",game.CC.getCharColor());
+				game.CD.stringDrawing(game.sr,game.w*0.5f+pw+gap,y1/3+2*(3*gap+pw)-gap,w*0.5f,h*0.5f,pw*0.5f,gap,"SPEED:"+(int)game.pref.getFloat("8maxsp")/200+"X",game.CC.getCharColor());
 				game.CD.stringDrawing(game.sr,game.w*0.5f+pw+gap,y1/3+2*(3*gap+pw)-h-gap,w*0.5f,h*0.5f,pw*0.5f,gap,"BEST:"+game.pref.getFloat("8best"),game.CC.getCharColor());
 				
 				game.CD.stringDrawing(game.sr,gap+4*w,y2+2*h1/3-2*h-gap,w1,h1/6,6*pw,0,"1",game.CC.getCharColor());
 				game.CD.stringDrawing(game.sr,x1,y2+2*h1/3-2*h-gap,w1,h1/6,6*pw,0,"2",game.CC.getCharColor());
 				
-				game.CD.stringDrawing(game.sr,2*gap+pw,2*y1/3+2*(3*gap+pw-h)-gap,w*0.5f,h*0.5f,pw*0.5f,gap,"MAX SPEED:"+(int)game.pref.getFloat("1maxsp")/200+"X",game.CC.getCharColor());
+				game.CD.stringDrawing(game.sr,2*gap+pw,2*y1/3+2*(3*gap+pw-h)-gap,w*0.5f,h*0.5f,pw*0.5f,gap,"SPEED:"+(int)game.pref.getFloat("1maxsp")/200+"X",game.CC.getCharColor());
 				game.CD.stringDrawing(game.sr,2*gap+pw,2*y1/3+2*(3*gap+pw-h)-h-gap,w*0.5f,h*0.5f,pw*0.5f,gap,"BEST:"+game.pref.getFloat("1best"),game.CC.getCharColor());
 				
-				game.CD.stringDrawing(game.sr,game.w*0.5f+pw+gap,2*y1/3+2*(3*gap+pw-h)-gap,w*0.5f,h*0.5f,pw*0.5f,gap,"MAX SPEED:"+(int)game.pref.getFloat("2maxsp")/200+"X",game.CC.getCharColor());
+				game.CD.stringDrawing(game.sr,game.w*0.5f+pw+gap,2*y1/3+2*(3*gap+pw-h)-gap,w*0.5f,h*0.5f,pw*0.5f,gap,"SPEED:"+(int)game.pref.getFloat("2maxsp")/200+"X",game.CC.getCharColor());
 				game.CD.stringDrawing(game.sr,game.w*0.5f+pw+gap,2*y1/3+2*(3*gap+pw-h)-h-gap,w*0.5f,h*0.5f,pw*0.5f,gap,"BEST:"+game.pref.getFloat("2best"),game.CC.getCharColor());
 				
 				//end
