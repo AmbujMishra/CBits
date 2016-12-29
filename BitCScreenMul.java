@@ -3,6 +3,7 @@ package com.kingam.cbits;
 *Ambuj Mishra
 * Created:	25 September 2016
 * Version:	1.0	(25 September 2016)
+* 29 12 2016: Added instructions and remove test mode, added advertisement
 */
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -49,7 +50,7 @@ public class BitCScreenMul implements Screen {
 		t= new int[2];
 		//pscr=new int[game.mul];
 		caught= new boolean[game.st];
-		speed=speed+500;
+		speed=speed+400;
 		go=true;
 		//scr=true;
 		//scrt=false;
@@ -113,9 +114,22 @@ public class BitCScreenMul implements Screen {
 		    game.sr.end();
 		    Gdx.gl.glDisable(GL20.GL_BLEND);
 		    game.CC.setNewColor(game.CC.blackColor, "ch");
-		    game.CD.stringDrawing(game.sr,game.w*0.5f-6*w1-6*gap,game.h-8*h1,2*w1,2*h1,2*pw,gap,"START",game.CC.getCharColor());
-		    game.CD.stringDrawing(game.sr,gap,gap,w1,h1,pw,gap,"TOUCH ANYWHERE TO START",game.CC.getCharColor());
-		    game.CC.setNewColor(game.CC.charColorColl[game.pref.getInteger("color")], "ch"); 
+		    //game.CD.stringDrawing(game.sr,game.w*0.5f-6*w1-6*gap,game.h-8*h1,2*w1,2*h1,2*pw,gap,"START",game.CC.getCharColor());
+			game.CD.stringDrawing(game.sr,gap,game.h-8*h1,0.6f*w1,0.6f*h1,0.6f*pw,0,"triE",game.CC.getCharColor());
+			game.CD.stringDrawing(game.sr,gap+w1,game.h-8*h1,0.6f*w1,0.6f*h1,0.6f*pw,gap,"DESIGNATE AN AREA TO EACH PLAYER.",game.CC.getCharColor());
+			game.CD.stringDrawing(game.sr,gap,game.h-11*h1-2*gap,0.6f*w1,0.6f*h1,0.6f*pw,0,"triE",game.CC.getCharColor());
+			game.CD.stringDrawing(game.sr,gap+w1,game.h-11*h1-2*gap,0.6f*w1,0.6f*h1,0.6f*pw,gap,"CATCH AND HOLD BITS IN YOUR AREA.",game.CC.getCharColor());
+			game.CD.stringDrawing(game.sr,gap,game.h-14*h1-4*gap,0.6f*w1,0.6f*h1,0.6f*pw,0,"triE",game.CC.getCharColor());
+			game.CD.stringDrawing(game.sr,gap+w1,game.h-14*h1-4*gap,0.6f*w1,0.6f*h1,0.6f*pw,gap,"MAX BIT CATCHER WINS THE GAME.",game.CC.getCharColor());
+			game.CD.stringDrawing(game.sr,gap,game.h-17*h1-6*gap,0.6f*w1,0.6f*h1,0.6f*pw,0,"triE",game.CC.getCharColor());
+			game.CD.stringDrawing(game.sr,gap+w1,game.h-17*h1-6*gap,0.6f*w1,0.6f*h1,0.6f*pw,gap,"PRESS BACK TO PAUSE THE GAME.",game.CC.getCharColor());
+			game.CD.stringDrawing(game.sr,gap,gap,w1,h1,pw,gap,"TOUCH ANYWHERE TO START",game.CC.getCharColor());
+			game.CD.stringDrawing(game.sr,gap,game.h-h1-gap,w1,h1,pw,gap,"WELCOME TO THE ARENA",game.CC.getCharColor());
+		    game.CC.setNewColor(game.CC.charColorColl[game.pref.getInteger("color")], "ch");
+			if(game.aoi.isNetConnected() && !banner)
+			{game.aoi.showBannerAd();
+				banner=true;
+			}
 		}
 		else if(game.pau)
 		{
@@ -127,9 +141,14 @@ public class BitCScreenMul implements Screen {
 		    game.sr.end();
 		    Gdx.gl.glDisable(GL20.GL_BLEND);
 		    game.CC.setNewColor(game.CC.blackColor, "ch");
-		    game.CD.stringDrawing(game.sr,game.w*0.5f-6*w1-6*gap,game.h-8*h1,2*w1,2*h1,2*pw,gap,"PAUSED",game.CC.getCharColor());
+		    game.CD.stringDrawing(game.sr,game.w*0.5f-6*w1-6*gap,game.h*0.5f-h1,2*w1,2*h1,2*pw,gap,"PAUSED",game.CC.getCharColor());
 		    game.CD.stringDrawing(game.sr,gap,gap,w1,h1,pw,gap,"TOUCH ANYWHERE TO RESUME",game.CC.getCharColor());
-		    game.CC.setNewColor(game.CC.charColorColl[game.pref.getInteger("color")], "ch"); 
+		    game.CC.setNewColor(game.CC.charColorColl[game.pref.getInteger("color")], "ch");
+
+			if(game.aoi.isNetConnected() && !banner)
+			{game.aoi.showBannerAd();
+				banner=true;
+			}
 		}
 		else
 		{
@@ -266,13 +285,13 @@ public class BitCScreenMul implements Screen {
 			{
 				if(speed<game.getMaxsp())
 					{
-					if(speed==game.getMaxsp()-500)
+					if(speed==game.getMaxsp()-400)
 					{
-						game.aoi.toast("Speeding UP "+(int)speed/500+"X");
+						game.aoi.toast("Speeding UP "+(int)speed/400+"X");
 						game.aoi.toast("Last Round");
 					}
 					else
-					game.aoi.toast("Speeding UP "+(int)speed/500+"X");
+					game.aoi.toast("Speeding UP "+(int)speed/400+"X");
 					
 					show();
 					}
@@ -308,14 +327,18 @@ public class BitCScreenMul implements Screen {
 				    game.CD.stringDrawing(game.sr,game.w*0.5f-3*(gap+w1),4*(h1+gap),w1*1.5f,h1*1.5f,pw*1.5f,gap,"SHARE",game.CC.getCharColor());
 				    game.CD.stringDrawing(game.sr,gap,gap,w1,h1,pw,gap,"LEADERBOARD",game.CC.getCharColor());
 				    game.CD.stringDrawing(game.sr,game.w-6*w1-6*gap,gap,w1,h1,pw,gap,"SUBMIT",game.CC.getCharColor());*/
-				    game.CC.setNewColor(game.CC.charColorColl[game.pref.getInteger("color")], "ch"); 
+				    game.CC.setNewColor(game.CC.charColorColl[game.pref.getInteger("color")], "ch");
+						if(game.aoi.isNetConnected() && !banner)
+						{game.aoi.showBannerAd();
+							banner=true;
+						}
 					}
 			}
 			else
 			{
 				game.aoi.toast("Bit Fusion");
 				game.st=game.st/2;
-				game.aoi.toast("Speeding UP"+(int)speed/500+"X");
+				game.aoi.toast("Speeding UP "+(int)speed/400+"X");
 				show();
 			}
 		}
@@ -327,12 +350,14 @@ public class BitCScreenMul implements Screen {
 				{
 				game.strt=false;
 				game.pau=false;
+					banner=false;
+					game.aoi.hideBannerAd();
 				}
 			else if (go && speed==game.getMaxsp())
 			{
 				speed=0;
 				game.newMul();
-				game.st=4;
+				game.st=32;
 				show();
 			}
 			else
@@ -567,6 +592,8 @@ private boolean sub(int x, int y) {
 	public void hide() {
 		speed=0;
 		game.setMaxsp(0);
+		game.aoi.hideBannerAd();
+		banner=false;
 		// TODO Auto-generated method stub
 		
 	}
