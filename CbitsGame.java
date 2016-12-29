@@ -140,6 +140,11 @@ public class CbitsGame extends Game{
     	BCM=new BitCScreenMul(this);
     	ABT=new AbtScreen(this);
     	COL=new ColScreen(this);
+		if(!pref.getBoolean("firstcolor"))		//Added for final release on 29 12 2016
+		{pref.putBoolean("firstcolor", true);
+			pref.putInteger("color", 4);
+			pref.flush();}
+		else
     	CC.setNewColor(CC.charColorColl[pref.getInteger("color")], "ch");
       	//fpslog=new FPSLogger();
         setScreen(MMS);
