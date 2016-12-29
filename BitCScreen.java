@@ -340,12 +340,20 @@ public class BitCScreen implements Screen {
 			    game.CD.stringDrawing(game.sr,gap,game.h-gap-11*h1,w1,h1,pw,gap,"NEW BEST  :"+tt,game.CC.getCharColor());
 					else
 					game.CD.stringDrawing(game.sr,gap,game.h-gap-11*h1,w1,h1,pw,gap,"SCORE     :"+tt,game.CC.getCharColor());
+					//29 12 2016:hint for submitting total score
+					game.CD.stringDrawing(game.sr,gap,game.h-gap-13*h1,w1*0.5f,h1*0.5f,pw*0.5f,gap,"YOU CAN SUBMIT YOUR TOTAL SCORE",game.CC.getCharColor());
+					game.CD.stringDrawing(game.sr,gap,game.h-gap-15*h1,w1*0.5f,h1*0.5f,pw*0.5f,gap,"AT PREVIOUS SCREEN IN THE LEADERBOARD",game.CC.getCharColor());
 			  //  if(bt!=0)
 			  //  game.CD.stringDrawing(game.sr,gap,game.h-gap-13*h1,w1,h1,pw,gap,"OLD RECORD:"+bt,game.CC.getCharColor());
 			    game.CD.stringDrawing(game.sr,game.w*0.5f-3*(gap+w1),4*(h1+gap),w1*1.5f,h1*1.5f,pw*1.5f,gap,"SHARE",game.CC.getCharColor());
-			    game.CD.stringDrawing(game.sr,gap,gap,w1,h1,pw,gap,"LEADERBOARD",game.CC.getCharColor());
-			    game.CD.stringDrawing(game.sr,game.w-6*w1-6*gap,gap,w1,h1,pw,gap,"SUBMIT",game.CC.getCharColor());
-			    game.CC.setNewColor(game.CC.charColorColl[game.pref.getInteger("color")], "ch"); 
+			   		//commented submit and leaderboard on 28 Dec 2016, added continue button
+					// game.CD.stringDrawing(game.sr,gap,gap,w1,h1,pw,gap,"LEADERBOARD",game.CC.getCharColor());
+			    //game.CD.stringDrawing(game.sr,game.w-6*w1-6*gap,gap,w1,h1,pw,gap,"SUBMIT",game.CC.getCharColor());
+
+					//game.CD.stringDrawing(game.sr,game.w*0.5f-3*w1,game.h*0.5f-3*h1,6*w1,6*h1,pw*4,0,"triE",game.CC.getCharColor());
+					//game.CD.stringDrawing(game.sr,game.w*0.5f-3*w1+gap,game.h*0.5f-4*h1-gap,w1*0.6f,h1*0.6f,pw,gap,"CONTINUE",game.CC.getCharColor());
+					game.CD.stringDrawing(game.sr,gap,gap,w1*0.6f,h1*0.6f,0.6f*pw,gap,"OR TOUCH ANYHWERE TO CONTINUE",game.CC.getCharColor());
+					game.CC.setNewColor(game.CC.charColorColl[game.pref.getInteger("color")], "ch");
 			    if(game.aoi.isNetConnected() && !banner) 
 			    {game.aoi.showBannerAd();
 			    banner=true;
@@ -399,6 +407,14 @@ public class BitCScreen implements Screen {
 
 			game.CD.stringDrawing(game.sr,gap,game.h-gap-11*h1,w1,h1,pw,gap,"SCORE  :"+tt,game.CC.getCharColor());
 			game.CD.stringDrawing(game.sr,gap,game.h-gap-13*h1,w1,h1,pw,gap,"BEST   :"+bt,game.CC.getCharColor());
+			//28122016: retry button and some instructions on time over screen
+			game.CD.stringDrawing(game.sr,game.w*0.5f-3*w1,game.h*0.5f-3*h1,6*w1,6*h1,pw*4,0,"retry",game.CC.getCharColor());
+			game.CD.stringDrawing(game.sr,game.w*0.5f-3*w1+gap,game.h*0.5f-4*h1-gap,w1*0.8f,h1*0.8f,pw,gap,"RETRY",game.CC.getCharColor());
+
+			game.CD.stringDrawing(game.sr,gap,2*gap+h1,w1*0.6f,h1*0.5f,0.5f*pw,gap,"CATCH THE MOVING BITS ON SCREEN",game.CC.getCharColor());
+			//game.CD.stringDrawing(game.sr,gap,game.h*0.5f-7*h1-2*gap,w1*0.5f,h1*0.5f,0.5f*pw,gap,"AND HOLD IT FOR 3 SECONDS",game.CC.getCharColor());
+			game.CD.stringDrawing(game.sr,gap,gap,w1*0.5f,h1*0.5f,0.5f*pw,gap,"BEFORE TIME RUNS OUT AT TOP CORNER",game.CC.getCharColor());
+
 			game.CC.setNewColor(game.CC.charColorColl[game.pref.getInteger("color")], "ch");
 			if(game.aoi.isNetConnected() && !banner)
 			{game.aoi.showBannerAd();
@@ -415,19 +431,19 @@ public class BitCScreen implements Screen {
 			t[1]=Gdx.input.getY();
 			}
 			//game.BD.draw(game.sr,0,0,Gdx.input.getX(),game.h-Gdx.input.getY(), '2');
-			if(to)
+			if(to & retry(Gdx.input.getX(),Gdx.input.getY()))
 			{
 				show();
 			}
 			else if(go && nb && share(Gdx.input.getX(),Gdx.input.getY()))
 			{
 				game.aoi.share
-				("TRY TO BEAT MY "+game.st+" BIT "+"CATCH RECORD"+"\n"+
-				  "AT "+(int)speed/200+" X "+"SPEED IN "+time+" SECONDS"+"\n"+
+				("TRY TO BEAT MY "+game.st+" BIT "+"CATCH RECORD"+"\n"+tt+" AT "+(int)speed/200+" X "+"SPEED"+"\n"+
+						"Checkout the leaderboard for more competition"+"\n"+
 				  "[Download the game from Play Store]"+"\n"+
 				  "https://play.google.com/store/apps/details?id=com.kingam.cbits");
 			}
-			else if(go && nb && lead(Gdx.input.getX(),Gdx.input.getY()))
+			/*else if(go && nb && lead(Gdx.input.getX(),Gdx.input.getY()))
 			{
 				System.out.println("leaderboard");
 				game.aoi.showScore();
@@ -436,7 +452,7 @@ public class BitCScreen implements Screen {
 			{
 				System.out.println("submit your best");
 				game.aoi.submitScore(62542, 1);
-			}
+			}*/
 			else if(scrt)
 			{
 			//scrt=false;
@@ -517,7 +533,19 @@ public class BitCScreen implements Screen {
 				}
 		}
 	}
-private boolean lead(int x, int y) {
+
+	private boolean retry(int x, int y) {
+
+		y=game.h-y;
+		if(x>game.w*0.5f-3*w1+gap && x<game.w*0.5f+3*w1+gap && y>game.h*0.5f-4*h1-gap && y<game.h*0.5f+3*h1)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	//commented on 28 Dec 2016, not using it anymore
+/*private boolean lead(int x, int y) {
 		
 		y=game.h-y;
 		if(x<11*(gap+w1) && y<h1+2*gap)
@@ -534,7 +562,7 @@ private boolean sub(int x, int y) {
 		return true;
 	}
 	return false;
-}
+}*/
 	private boolean share(int x, int y) {
 		
 		y=game.h-y;
